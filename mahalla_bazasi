@@ -1,0 +1,29 @@
+import sqlite3
+
+# Baza bilan bog'lanish
+conn = sqlite3.connect('mahalla_bazasi.db')
+cursor = conn.cursor()
+
+# Jadvalni yangitdan yaratish (Barcha 11 ta mas'ul xodim uchun)
+cursor.execute("DROP TABLE IF EXISTS hududlar")
+cursor.execute('''CREATE TABLE hududlar 
+               (id INTEGER PRIMARY KEY, viloyat TEXT, tuman TEXT, mahalla TEXT, 
+                rais TEXT, rais_tel TEXT, inspektor TEXT, inspektor_tel TEXT, 
+                yoshlar TEXT, yoshlar_tel TEXT, hokim_yord TEXT, hokim_yord_tel TEXT,
+                xotin_qizlar TEXT, xotin_qizlar_tel TEXT,
+                suv TEXT, gaz TEXT, t_hokimi TEXT, kadastr TEXT, iib TEXT, dxx TEXT)''')
+
+# Sirdaryo, Sardoba tumani uchun namunaviy ma'lumotlar
+data = [
+    ('Sirdaryo', 'Sardoba', "Do'stlik MFY", 'Eshmatov J.', '+998901234567', 'Aliyev B.', '+998911234567', 'Karimov Y.', '+998931234567', 'Sodiqov H.', '+998941234567', 'Umarova M.', '+998991234567', '1055', '1104', '76 221-12-12', '76 221-00-00', '102', '1008'),
+    ('Sirdaryo', 'Sardoba', "Yurtdosh MFY", 'Rasulov T.', '+998901112233', 'Vahobov S.', '+998911112233', 'Nizomov A.', '+998931112233', 'Po\'latov F.', '+998941112233', 'Azizova D.', '+998991112233', '1055', '1104', '76 221-12-12', '76 221-00-00', '102', '1008'),
+    ('Sirdaryo', 'Sardoba', "Qo'rĝontepa MFY", 'Hasanov R.', '+998905556677', 'G\'afforov K.', '+998915556677', 'Ismoilov M.', '+998935556677', 'Zokirov L.', '+998945556677', 'Saidova N.', '+998995556677', '1055', '1104', '76 221-12-12', '76 221-00-00', '102', '1008')
+]
+
+cursor.executemany('''INSERT INTO hududlar 
+    (viloyat, tuman, mahalla, rais, rais_tel, inspektor, inspektor_tel, yoshlar, yoshlar_tel, hokim_yord, hokim_yord_tel, xotin_qizlar, xotin_qizlar_tel, suv, gaz, t_hokimi, kadastr, iib, dxx) 
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', data)
+
+conn.commit()
+conn.close()
+print("Ma'lumotlar bazasi (.db fayli) muvaffaqiyatli yaratildi!")
